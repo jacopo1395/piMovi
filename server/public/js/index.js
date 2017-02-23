@@ -1,6 +1,8 @@
 /**
  * Created by jadac_000 on 13/02/2017.
  */
+ const {ipcRenderer} = require('electron')
+ ipcRenderer.on('info' , function(event , data){ console.log(data.key) });
 
 var movies = [];
 var page = 1;

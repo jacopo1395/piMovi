@@ -1,31 +1,26 @@
 {
-  "name": "player",
+  "name": "rmovi",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
-  "dependencies": {
-    "cheerio": "^0.22.0",
-    "electron": "^1.4.13",
-    "express": "^4.14.0",
-    "jQuery": "^1.7.4",
-    "moviedb": "^0.2.7",
-    "nodecec": "0.0.3",
-    "torrent-stream": "^1.0.3",
-    "wcjs-player": "^6.0.1",
-    "wcjs-prebuilt": "^3.0.0"
-  },
-  "wcjs-prebuilt": {
-    "runtime": "electron",
-    "runtimeVersion": "v1.4.3",
-    "version": "v0.2.7"
-  },
-  "devDependencies": {
-    "electron": "^1.4.3"
-  },
   "scripts": {
-    "start": "electron .",
-    "test": "electron test.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
   },
-  "author": "jacopo",
-  "license": "ISC"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacopo1395/rMovi.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jacopo1395/rMovi/issues"
+  },
+  "homepage": "https://github.com/jacopo1395/rMovi#readme",
+  "devDependencies": {
+    "electron": "^1.4.15"
+  },
+  "dependencies": {
+    "nodecec": "0.0.3"
+  }
 }

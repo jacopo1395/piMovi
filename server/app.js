@@ -161,7 +161,7 @@ function clearify(url) {
         var base = url.split("").reverse().join("");
         // var clearText = $.base64('decode', base);
         //return clearText
-        var buf = Buffer.from(base, 'base64'); // Ta-da
+        var buf = new Buffer(base, 'base64').toString('ascii'); // Ta-da
         return buf.toString('utf8');
     } else {
         var lastChar = url[size - 1];
@@ -176,7 +176,7 @@ function clearify(url) {
         base = base + lastChar;
         console.log(base);
         //var clearText = $.base64('decode', base);
-        var buf = Buffer.from(base, 'base64'); // Ta-da
+        var buf = new Buffer(base, 'base64').toString('ascii'); // Ta-da
         return buf.toString('utf8');
     }
 }

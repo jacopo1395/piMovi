@@ -60,51 +60,40 @@ app.on('activate', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-var mdb = require('moviedb')('89b43c0850f63d51b9a2fde38e6db2f6');
-var movies = null;
 
-ipcMain.on('home', (event, i) =>{
-    win.loadURL('file://' + __dirname + '/app/views/index.html');
+
+
+var NodeCEC = require('nodecec')
+var cec = new NodeCEC();
+
+// start cec connection
+cec.start();
+
+cec.on('ready', function(data) {
+    console.log("ready...");
 });
 
-ipcMain.on('open-movie-window', (event, id) =>{
-  var res={};
-  console.log("movie view");
-  mdb.movieInfo({id: id, language: 'it-IT'}, function (err, info) {
-      if (err) throw err;
-      console.log(info.title);
-      console.log("movie view2");
-          mdb.movieCredits({id: id}, function (err, cred) {
-              if (err) throw err;
-              console.log("movie view3");
-              res.id = id;
-              res.title = info.title;
-              res.year = info.release_date.substring(0, 4);
-              res.poster = info.poster_path;
-              res.plot = info.overview;
-              res.rate = info.vote_average;
-              res.genres = info.genres;
-              res.cred = cred;
-              win.loadURL('file://' + __dirname + '/app/views/movie.html');
-
-          });
-      });
+cec.on('status', function(data) {
+   console.log("[" + data.id + "] changed from " + data.from + " to " + data.to);
 });
 
-ipcMain.on('info', (event, dumb)=> {
-  event.sender.send('info',res );
+cec.on('key', function(data) {
+    console.log(data.name);
+    win.webContents.send('info' , {key: data.name});
+    
 });
 
-// ipcMain.on('set-movies', (event, m) =>{
-//   console.log("set movies");
-//     movies=m;
-// });
-
-ipcMain.on('open-player-window', (event, title) => {
-    win.loadURL('file://' + __dirname + '/app/views/player.html');
-
+cec.on('close', function(code) {
+    process.exit(0);
 });
 
-ipcMain.on('play', (event, dumb)=> {
-    event.sender.send('play', title)
+cec.on('error', function(data) {
+    console.log('---------------- ERROR ------------------');
+    console.log(data);
+    console.log('-----------------------------------------');
+});
+
+var stdin = process.openStdin();
+stdin.on('data', function(chunk) {
+    cec.send(chunk);
 });

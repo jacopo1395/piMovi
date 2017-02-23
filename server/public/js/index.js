@@ -2,7 +2,6 @@
  * Created by jadac_000 on 13/02/2017.
  */
  const {ipcRenderer} = require('electron')
- ipcRenderer.on('info' , function(event , data){ console.log(data.key) });
 
 var movies = [];
 var page = 1;
@@ -58,9 +57,6 @@ function setTitle(title) {
     return title
 }
 
-var screenWidht = 6;
-var selected = null;
-var drop = false;
 
 function load() {
     console.log('load');
@@ -87,6 +83,102 @@ function load() {
     }
 }
 
+
+
+var screenWidht = 6;
+var selected = null;
+var drop = false;
+
+ipcRenderer.on('info' , function(event , data){
+  console.log(data.key)
+  if(data.key=='left' && selected>-3){
+    if (selected >= 0) $("#" + selected).children().children(".image").removeClass("imageSelected");
+    else $("#" + selected).removeClass("linkSelected");
+    selected--;
+    $("#" + selected).children().children(".image").addClass("imageSelected");
+    var center = ($(window).height() / 2) - 200;
+    var top = $("#" + selected).offset().top;
+    if (top > center) {
+        $(window).scrollTop(top - center);
+    }
+    else {
+        location.href = "#";
+    }
+  }
+
+  if(data.key=='right' && selected < $(".row").children().length - 1){
+    if (selected >= 0) $("#" + selected).children().children(".image").removeClass("imageSelected");
+    else $("#" + selected).removeClass("linkSelected");
+    selected++;
+    $("#" + selected).children().children(".image").addClass("imageSelected");
+    var center = ($(window).height() / 2) - 200;
+    var top = $("#" + selected).offset().top;
+    if (top > center) {
+        $(window).scrollTop(top - center);
+    }
+    else {
+        location.href = "#";
+    }
+  }
+
+  if (data.key=='up' && selected < screenWidht) {
+      //navbar
+      if (selected >= 0) {
+          $("#" + selected).children().children(".image").removeClass("imageSelected");
+          selected = -1;
+          $("#" + selected).addClass("linkSelected");
+      }
+  } else {
+      $("#" + selected).children().children(".image").removeClass("imageSelected");
+      selected = selected - screenWidht;
+      $("#" + selected).children().children(".image").addClass("imageSelected");
+      var center = ($(window).height() / 2) - 200;
+      var top = $("#" + selected).offset().top;
+      if (top > center) {
+          $(window).scrollTop(top - center);
+      }
+      else {
+          location.href = "#";
+      }
+  }
+
+  if(data.key=='down' ){
+  $("#" + selected).children().children(".image").removeClass("imageSelected");
+      if (selected + screenWidht < $(".row").children().length - 1) {
+          if (selected < 0) {
+              $("#" + selected).removeClass("linkSelected");
+              selected = 0;
+              $("#" + selected).children().children(".image").addClass("imageSelected");
+          }
+          else {
+              selected = selected + screenWidht;
+              $("#" + selected).children().children(".image").addClass("imageSelected");
+              // location.href = "#";
+              // location.href = "#"+selected;
+              var center = ($(window).height() / 2) - 200;
+              var top = $("#" + selected).offset().top;
+              if (top > center) {
+                  $(window).scrollTop(top - center);
+              }
+          }
+      }
+      else {
+          selected = $(".row").children().length - 1;
+          $("#" + selected).children().children(".image").addClass("imageSelected");
+          var center = ($(window).height() / 2) - 200;
+          var top = $("#" + selected).offset().top;
+          if (top > center) {
+              $(window).scrollTop(top - center);
+          }
+      }
+    }
+
+    if(data.key=='enter' ){
+      $("#" + selected).click();
+    }
+
+
+});
 
 // document.onkeydown = function (evt) {
 //     screenWidht = Math.floor($(window).width() / 200);

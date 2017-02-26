@@ -26,6 +26,8 @@ function createWindow () {
   // Open the DevTools.
   win.webContents.openDevTools()
 
+  win.setFullScreen(true)
+
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -62,7 +64,7 @@ app.on('activate', () => {
 
 
 
-
+if(false){
 var NodeCEC = require('nodecec')
 var cec = new NodeCEC();
 
@@ -79,7 +81,7 @@ cec.on('status', function(data) {
 
 cec.on('key', function(data) {
     console.log(data.name);
-    win.webContents.send('info' , {key: data.name});    
+    win.webContents.send('info' , {key: data.name});
 });
 
 cec.on('close', function(code) {
@@ -96,3 +98,4 @@ var stdin = process.openStdin();
 stdin.on('data', function(chunk) {
     cec.send(chunk);
 });
+}

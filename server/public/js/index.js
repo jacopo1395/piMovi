@@ -174,7 +174,7 @@ ipcRenderer.on('info' , function(event , data){
     }
 
     if(data.key=='enter' ){
-      $("#" + selected).click();
+      $("#" + selected)[0].click();
     }
 
 

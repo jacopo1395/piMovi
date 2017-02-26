@@ -79,8 +79,7 @@ cec.on('status', function(data) {
 
 cec.on('key', function(data) {
     console.log(data.name);
-    win.webContents.send('info' , {key: data.name});
-    
+    win.webContents.send('info' , {key: data.name});    
 });
 
 cec.on('close', function(code) {

@@ -180,10 +180,12 @@ ipcRenderer.on('info' , function(event , data){
       }
     }
 
-    if(data.key=='select' ){
+
+  
+    if(data.key=='enter' ){
 		console.log('ok');
       $("#" + selected)[0].click();
-      $("#" + selected).click();
+
     }
 
 

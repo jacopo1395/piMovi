@@ -132,7 +132,7 @@ app.get('/play/:title', function (req, res) {
                                     if (!error && response.statusCode == 200) {
                                         $ = cheerio.load(body);
                                         var decode = $('#mediaspace_wrapper').children().eq(6).children().eq(0).text();
-                                        decode = get_utl(decode);
+                                        decode = get_url(decode);
                                         var videourl = "https://openload.co/stream/" + decode + "?mime=true";
                                         var data = {};
                                         data.videourl = videourl;
@@ -181,7 +181,7 @@ function clearify(url) {
     }
 }
 
-function get_utl(encode) {
+function get_url_old(encode) {
     try {
         first_two_chars = parseInt(parseFloat(encode[0] + encode[1]))
 
@@ -202,6 +202,34 @@ function get_utl(encode) {
     } catch (e) {
 
     }
+
+}
+
+function get_url(encode){
+  text_decode = {}
+  v1 = parseInt(encode[0])
+  index = 1
+  while (index < (encode.length)){
+      i = (encode[index]).charCodeAt(0)
+      key = 0
+      if (i <= 90){
+          key = i - 65
+      }
+      else {
+        if (i >= 97){
+          key = 25 + i - 97
+        }
+      }
+      text_decode[key] = String.fromCharCode(Math.floor( parseInt(encode[index+2]+encode[index+3]+encode[index+4]) / parseInt(encode[index+1]) ) - v1 )
+      index += 5
+  }
+  //sorted(text_decode, key=lambda key: text_decode[key])
+  suffix = ""
+  for (key in text_decode){
+    if (text_decode.hasOwnProperty(key))
+      suffix += text_decode[key]
+  }
+  return suffix;
 
 }
 

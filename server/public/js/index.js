@@ -14,7 +14,7 @@ $.getJSON(address+"/movies/" + page, function (data) {
     page++;
     var i = 0;
     $.each(data.results, function (key, val) {
-        items.push("<div class='wrapperImage  col-sm-3 col-md-3 col-lg-2'  id='" + key + "' > <a class='link' href='"+address+"/movie_info/" + val.id + "'> <img width='190' height='280'  src='http://image.tmdb.org/t/p/w185//" + val.poster_path + "' class='image'> </a> <h2 class='title' width='150'> <a href=''>" + setTitle(val.title) + "</a> <h2 class='rate'>" + val.vote_average + "</h2> </h2></div>");
+        items.push("<div class='wrapperImage  col-sm-3 col-md-3 col-lg-2'  id='i" + key + "' > <a class='link' href='"+address+"/movie_info/" + val.id + "'> <img width='190' height='280'  src='http://image.tmdb.org/t/p/w185//" + val.poster_path + "' class='image'> </a> <h2 class='title' width='150'> <a href=''>" + setTitle(val.title) + "</a> <h2 class='rate'>" + val.vote_average + "</h2> </h2></div>");
     });
     $("<div>", {
         "class": "row",
@@ -40,7 +40,7 @@ function filter(g) {
         movies = data.results;
         var i = 0;
         $.each(data.results, function (key, val) {
-            items.push("<div class='wrapperImage  col-sm-3 col-md-3 col-lg-2'  id='" + key + "' > <a class='link' href='"+address+"/movie_info/" + val.id + "'> <img width='190' height='280'  src='http://image.tmdb.org/t/p/w185//" + val.poster_path + "' class='image'> </a> <h2 class='title' width='150'> <a href=''>" + setTitle(val.title) + "</a> <h2 class='rate'>" + val.vote_average + "</h2> </h2></div>");
+            items.push("<div class='wrapperImage  col-sm-3 col-md-3 col-lg-2'  id='i" + key + "' > <a class='link' href='"+address+"/movie_info/" + val.id + "'> <img width='190' height='280'  src='http://image.tmdb.org/t/p/w185//" + val.poster_path + "' class='image'> </a> <h2 class='title' width='150'> <a href=''>" + setTitle(val.title) + "</a> <h2 class='rate'>" + val.vote_average + "</h2> </h2></div>");
         });
         $(".row").remove();
         $("<div>", {
@@ -59,23 +59,23 @@ function setTitle(title) {
 
 
 function load() {
-    console.log('load');
-    if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+    // console.log('load');
+    if ($(window).scrollTop() + $(window).height() > $(document).height() - 300) {
         $(window).unbind('scroll');
-        console.log("near bottom!");
-        console.log(movies.length);
+        // console.log("near bottom!");
+        // console.log(movies.length);
         $.getJSON(address+"/movies/" + page, function (data) {
-            console.log("data");
+            // console.log("data");
             var items = [];
             var i = movies.length;
             movies = movies.concat(data.results);
             page++;
             $.each(data.results, function (key, val) {
-                items.push("<div class='wrapperImage  col-sm-3 col-md-3 col-lg-2'  id='" + (key+i) + "' > <a class='link' href='"+address+"/movie_info/" + val.id + "'> <img width='190' height='280'  src='http://image.tmdb.org/t/p/w185//" + val.poster_path + "' class='image'> </a> <h2 class='title' width='150'> <a href=''>" + setTitle(val.title) + "</a> <h2 class='rate'>" + val.vote_average + "</h2> </h2></div>");
+                items.push("<div class='wrapperImage  col-sm-3 col-md-3 col-lg-2'  id='i" + (key+i) + "' > <a class='link' href='"+address+"/movie_info/" + val.id + "'> <img width='190' height='280'  src='http://image.tmdb.org/t/p/w185//" + val.poster_path + "' class='image'> </a> <h2 class='title' width='150'> <a href=''>" + setTitle(val.title) + "</a> <h2 class='rate'>" + val.vote_average + "</h2> </h2></div>");
             });
             $('.row').append(items.join(""));
             $(window).scroll(load);
-            console.log("movies.length ", movies.length)
+            // console.log("movies.length ", movies.length)
 
         });
 
@@ -181,7 +181,7 @@ ipcRenderer.on('info' , function(event , data){
     }
 
 
-  
+
     if(data.key=='enter' ){
 		console.log('ok');
       $("#" + selected)[0].click();
@@ -191,122 +191,91 @@ ipcRenderer.on('info' , function(event , data){
 
 });
 
-// document.onkeydown = function (evt) {
-//     screenWidht = Math.floor($(window).width() / 200);
-//     console.log(screenWidht)
-//     evt = evt || window.event;
-//     if (selected == null) {
-//         $("#0").children().children(".image").addClass("imageSelected");
-//         selected = 0;
-//         return;
-//     }
-//     if (evt.keyCode == 13) {
-//         if (selected >= 0) $("#" + selected).children()[0].click();
-//         else {
-//             $("#" + selected)[0].click();
-//             drop = true;
-//         }
-//         return;
-//     }
-//     switch (evt.keyCode) {
-//         case 37: //left
-//             if (selected > -3) {
-//                 if (selected >= 0) $("#" + selected).children().children(".image").removeClass("imageSelected");
-//                 else $("#" + selected).removeClass("linkSelected");
-//
-//                 selected--;
-//                 if (selected >= 0) {
-//                     $("#" + selected).children().children(".image").addClass("imageSelected");
-//                     var center = ($(window).height() / 2) - 200;
-//                     var top = $("#" + selected).offset().top;
-//                     if (top > center) {
-//                         $(window).scrollTop(top - center);
-//                     }
-//                     else {
-//                         location.href = "#";
-//                     }
-//                 }
-//                 else $("#" + selected).addClass("linkSelected");
-//             }
-//             break;
-//
-//         case 38: //up
-//             if (selected < screenWidht) {
-//                 //navbar
-//                 if (selected >= 0) {
-//                     $("#" + selected).children().children(".image").removeClass("imageSelected");
-//                     selected = -1;
-//                     $("#" + selected).addClass("linkSelected");
-//                 }
-//             } else {
-//                 $("#" + selected).children().children(".image").removeClass("imageSelected");
-//                 selected = selected - screenWidht;
-//                 $("#" + selected).children().children(".image").addClass("imageSelected");
-//                 var center = ($(window).height() / 2) - 200;
-//                 var top = $("#" + selected).offset().top;
-//                 if (top > center) {
-//                     $(window).scrollTop(top - center);
-//                 }
-//                 else {
-//                     location.href = "#";
-//                 }
-//             }
-//             break;
-//
-//         case 39: //right
-//             if (selected < $(".row").children().length - 1) {
-//                 if (selected < 0) {
-//                     $("#" + selected).removeClass("linkSelected");
-//                     selected++;
-//                     if (selected < 0) {
-//                         $("#" + selected).addClass("linkSelected");
-//                     }
-//                     else {
-//                         $("#" + selected).children().children(".image").addClass("imageSelected");
-//                     }
-//                 }
-//                 else {
-//                     $("#" + selected).children().children(".image").removeClass("imageSelected");
-//                     selected++;
-//                     $("#" + selected).children().children(".image").addClass("imageSelected");
-//                     var center = ($(window).height() / 2) - 200;
-//                     var top = $("#" + selected).offset().top;
-//                     if (top > center) {
-//                         $(window).scrollTop(top - center);
-//                     }
-//                 }
-//             }
-//
-//             break;
-//         case 40: //down
-//             $("#" + selected).children().children(".image").removeClass("imageSelected");
-//             if (selected + screenWidht < $(".row").children().length - 1) {
-//                 if (selected < 0) {
-//                     $("#" + selected).removeClass("linkSelected");
-//                     selected = 0;
-//                     $("#" + selected).children().children(".image").addClass("imageSelected");
-//                 }
-//                 else {
-//                     selected = selected + screenWidht;
-//                     $("#" + selected).children().children(".image").addClass("imageSelected");
-//                     // location.href = "#";
-//                     // location.href = "#"+selected;
-//                     var center = ($(window).height() / 2) - 200;
-//                     var top = $("#" + selected).offset().top;
-//                     if (top > center) {
-//                         $(window).scrollTop(top - center);
-//                     }
-//                 }
-//             }
-//             else {
-//                 selected = $(".row").children().length - 1;
-//                 $("#" + selected).children().children(".image").addClass("imageSelected");
-//                 var center = ($(window).height() / 2) - 200;
-//                 var top = $("#" + selected).offset().top;
-//                 if (top > center) {
-//                     $(window).scrollTop(top - center);
-//                 }
-//             }
-//             break;
-//     }
-// }
+
+function goto(s){
+  var center = ($(window).height() / 2) - 200;
+  var top = $("#i" + s).offset().top;
+  if (top > center) {
+      // $(window).scrollTop(top - center);
+      location.href = "#i" + s;
+
+  }
+  else {
+      location.href = "#";
+  }
+}
+
+document.onkeydown = function (evt) {
+    screenWidht = Math.floor($(window).width() / 200);
+    evt = evt || window.event;
+    if (selected == null) {
+        $("#i0").children().children(".image").addClass("imageSelected");
+        selected = 0;
+        return;
+    }
+    // if (evt.keyCode == 13) {
+    //     if (selected >= 0) $("#" + selected).children()[0].click();
+    //     else {
+    //         $("#" + selected)[0].click();
+    //         drop = true;
+    //     }
+    //     return;
+    // }
+console.log(evt.keyCode);
+    switch (evt.keyCode) {
+        case 65: //left
+            if (selected > 0) {
+              console.log("left");
+                $("#i" + selected).children().children(".image").removeClass("imageSelected");
+                selected--;
+                console.log(selected);
+                $("#i" + selected).children().children(".image").addClass("imageSelected");
+                goto(selected);
+            }
+            break;
+
+        case 87: //up
+            if (selected >= screenWidht) {
+              console.log("up");
+                $("#i" + selected).children().children(".image").removeClass("imageSelected");
+                selected = selected - screenWidht;
+                console.log(selected);
+                $("#i" + selected).children().children(".image").addClass("imageSelected");
+                goto(selected)
+            }
+            break;
+
+        case 68: //right
+            if (selected < $(".row").children().length - 1) {
+              console.log($(".row").children().length - 1);
+              console.log("right");
+              $("#i" + selected).children().children(".image").removeClass("imageSelected");
+              selected++;
+              console.log(selected);
+                console.log( $("#"+selected) );
+              $("#i" + selected).children().children(".image").addClass("imageSelected");
+              goto(selected);
+            }
+            break;
+
+        case 83: //down
+            if (selected + screenWidht < $(".row").children().length - 1) {
+              console.log("down1");
+              $("#i" + selected).children().children(".image").removeClass("imageSelected");
+              selected = selected + screenWidht;
+              $("#i" + selected).children().children(".image").addClass("imageSelected");
+              goto(selected)
+              console.log(selected);
+            }
+            else {
+              // console.log("down2");
+              //   $("#" + selected).children().children(".image").removeClass("imageSelected");
+              //   selected = $(".row").children().length - 1;
+              //   $("#" + selected).children().children(".image").addClass("imageSelected");
+              //   goto(selected)
+            }
+
+            break;
+    }
+
+}

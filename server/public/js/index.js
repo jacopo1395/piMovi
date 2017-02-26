@@ -91,7 +91,12 @@ var drop = false;
 
 ipcRenderer.on('info' , function(event , data){
   console.log(data.key)
-  if(data.key=='left' && selected>-3){
+  if (selected == null) {
+   $("#0").children().children(".image").addClass("imageSelected");
+         selected = 0;
+         return;
+  }
+  if(data.key=='left' && selected>0){
     if (selected >= 0) $("#" + selected).children().children(".image").removeClass("imageSelected");
     else $("#" + selected).removeClass("linkSelected");
     selected--;
@@ -110,7 +115,8 @@ ipcRenderer.on('info' , function(event , data){
     if (selected >= 0) $("#" + selected).children().children(".image").removeClass("imageSelected");
     else $("#" + selected).removeClass("linkSelected");
     selected++;
-    $("#" + selected).children().children(".image").addClass("imageSelected");
+    if (selected >= 0) $("#" + selected).children().children(".image").addClass("imageSelected");
+    else $("#" + selected).addClass("linkSelected");
     var center = ($(window).height() / 2) - 200;
     var top = $("#" + selected).offset().top;
     if (top > center) {
@@ -128,7 +134,7 @@ ipcRenderer.on('info' , function(event , data){
           selected = -1;
           $("#" + selected).addClass("linkSelected");
       }
-  } else {
+   else {
       $("#" + selected).children().children(".image").removeClass("imageSelected");
       selected = selected - screenWidht;
       $("#" + selected).children().children(".image").addClass("imageSelected");
@@ -140,6 +146,7 @@ ipcRenderer.on('info' , function(event , data){
       else {
           location.href = "#";
       }
+    }
   }
 
   if(data.key=='down' ){
@@ -173,7 +180,9 @@ ipcRenderer.on('info' , function(event , data){
       }
     }
 
-    if(data.key=='enter' ){
+    if(data.key=='select' ){
+		console.log('ok');
+      $("#" + selected)[0].click();
       $("#" + selected).click();
     }
 
